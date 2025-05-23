@@ -1,13 +1,217 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Digital library</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard Pustakawan</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      margin: 0;
+      padding: 30px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    h2 {
+      text-align: center;
+      color: #4c1d95;
+    }
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    .stat-box {
+      background: #7c3aed;
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 120px;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 28px;
+      font-weight: bold;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px 10px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+    }
+    th {
+      background: #ede9fe;
+    }
+    button {
+      background: #7c3aed;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    form {
+      background: white;
+      padding: 20px;
+      margin-top: 30px;
+      border-radius: 10px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 12px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+    input[type="submit"] {
+      width: 100%;
+      background: #7c3aed;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Dashboard Pustakawan</h2>
+
+  <div class="stats">
+    <div class="stat-box">
+      <div class="stat-number" id="total-books">6</div>
+      Total Buku
+    </div>
+    <div class="stat-box">
+      <div class="stat-number">2</div>
+      Buku Dipinjam
+    </div>
+    <div class="stat-box">
+      <div class="stat-number">120</div>
+      Anggota Aktif
+    </div>
+  </div>
+
+  <table id="books-table">
+    <thead>
+      <tr>
+        <th>Judul</th>
+        <th>Penulis</th>
+        <th>Tahun</th>
+        <th>Kategori</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Daftar buku akan muncul di sini -->
+    </tbody>
+  </table>
+
+  <form id="book-form">
+    <h3>Tambah Buku Baru</h3>
+    <input type="text" id="title" placeholder="Judul Buku" required />
+    <input type="text" id="author" placeholder="Penulis" required />
+    <input type="text" id="year" placeholder="Tahun" required />
+    <input type="text" id="category" placeholder="Kategori" required />
+    <input type="submit" value="Simpan" />
+  </form>
+
+  <script>
+    const books = [
+      { id: 1, title: 'Manuskrip Kuno Nusantara', author: 'PN Hadi', year: '1920', category: 'Sejarah' },
+      { id: 2, title: 'Gita Kisah Jawa', author: 'E. Soekarno', year: '1905', category: 'Sastra' },
+      { id: 3, title: 'Cerita dari Nusa Lampah', author: 'Dewi Sartika', year: '1945', category: 'Legenda' },
+      { id: 4, title: 'Legenda Nusantara', author: 'Dewi Sartika', year: '1945', category: 'Legenda' },
+      { id: 5, title: 'Sejarah Kerajaan Majapahit', author: 'Gajah Mada', year: '1905', category: 'Sejarah' },
+      { id: 6, title: 'Sastra Kuno Bali', author: 'I Gusti Ngurah', year: '1900', category: 'Sastra' }
+    ];
+
+    const tableBody = document.querySelector('#books-table tbody');
+    const totalBooksEl = document.getElementById('total-books');
+    const form = document.getElementById('book-form');
+
+    function renderBooks() {
+      tableBody.innerHTML = '';
+      books.forEach(book => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${book.title}</td>
+          <td>${book.author}</td>
+          <td>${book.year}</td>
+          <td>${book.category}</td>
+          <td><button onclick="editBook(${book.id})">Edit</button></td>
+        `;
+        tableBody.appendChild(tr);
+      });
+      totalBooksEl.textContent = books.length;
+    }
+
+    function editBook(id) {
+      const book = books.find(b => b.id === id);
+      if (!book) return alert('Buku tidak ditemukan');
+      document.getElementById('title').value = book.title;
+      document.getElementById('author').value = book.author;
+      document.getElementById('year').value = book.year;
+      document.getElementById('category').value = book.category;
+      form.dataset.editId = id;
+      form.querySelector('input[type="submit"]').value = 'Update';
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const title = document.getElementById('title').value.trim();
+      const author = document.getElementById('author').value.trim();
+      const year = document.getElementById('year').value.trim();
+      const category = document.getElementById('category').value.trim();
+
+      if (!title || !author || !year || !category) {
+        alert('Semua field harus diisi');
+        return;
+      }
+
+      const editId = form.dataset.editId;
+      if (editId) {
+        // Update buku
+        const book = books.find(b => b.id === parseInt(editId));
+        if (book) {
+          book.title = title;
+          book.author = author;
+          book.year = year;
+          book.category = category;
+        }
+        delete form.dataset.editId;
+        form.querySelector('input[type="submit"]').value = 'Simpan';
+      } else {
+        // Tambah buku baru
+        const newBook = {
+          id: books.length ? books[books.length - 1].id + 1 : 1,
+          title, author, year, category
+        };
+        books.push(newBook);
+      }
+
+      form.reset();
+      renderBooks();
+    });
+
+    renderBooks();
+  </script>
+</body>
 </html>
