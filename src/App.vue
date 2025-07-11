@@ -5,7 +5,7 @@
       <nav class="nav-links">
         <router-link to="/" exact-active-class="active-link">Home</router-link>
         <router-link to="/books" exact-active-class="active-link">Books</router-link>
-        <router-link to="/loan/request" exact-active-class="active-link">Loan</router-link>
+        <router-link to="/loan-request" exact-active-class="active-link">Loan</router-link>
         <router-link to="/profile" exact-active-class="active-link">Profile</router-link>
         <router-link to="/login" exact-active-class="active-link">Login</router-link>
         <router-link to="/librarian/dashboard" exact-active-class="active-link">Librarian</router-link>

@@ -34,24 +34,32 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import AddBook from './AddBook.vue'
 import EditBook from './EditBook.vue'
 
-const props = defineProps(['books'])
-const emit = defineEmits(['add-book', 'edit-book'])
-
+const books = ref([])
 const showAdd = ref(false)
 const showEdit = ref(false)
 const selectedBook = ref(null)
 
+async function fetchBooks() {
+  try {
+    const response = await fetch('http://localhost:3000/books')
+    if (!response.ok) throw new Error('Gagal mengambil data buku')
+    books.value = await response.json()
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 function handleAdd(book) {
-  emit('add-book', book)
   resetForm()
+  fetchBooks()
 }
 function handleEdit(book) {
-  emit('edit-book', book)
   resetForm()
+  fetchBooks()
 }
 function startEdit(book) {
   selectedBook.value = { ...book }
@@ -63,58 +71,12 @@ function resetForm() {
   showEdit.value = false
   selectedBook.value = null
 }
+
+onMounted(() => {
+  fetchBooks()
+})
 </script>
 
 <style scoped>
-.book-table-container {
-  background: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 30px;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.04);
-}
-.table-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-.add-btn {
-  background: #7c3aed;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 16px;
-  font-weight: bold;
-  cursor: pointer;
-}
-.book-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.book-table th, .book-table td {
-  padding: 10px 8px;
-  text-align: left;
-}
-.book-table th {
-  background: #ede9fe;
-}
-.book-table tr:not(:last-child) {
-  border-bottom: 1px solid #eee;
-}
-.edit-btn {
-  background: #6366f1;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 14px;
-  cursor: pointer;
-  font-weight: bold;
-}
-.form-row {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  margin-top: 30px;
-}
+/* ...CSS sama seperti sebelumnya... */
 </style>

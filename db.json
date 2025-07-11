@@ -1,0 +1,53 @@
+{
+  "books": [
+    {
+      "id": "1",
+      "title": "Belajar Vue.js",
+      "author": "Andi Wijaya",
+      "isbn": "9786021234567",
+      "year": 2021,
+      "category": "Pemrograman",
+      "available": true
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "name": "Admin Perpustakaan",
+      "username": "admin",
+      "password": "admin",
+      "role": "librarian"
+    }
+  ],
+  "loans": [
+    {
+      "id": "1",
+      "member": "Andi Wijaya",
+      "book": "Belajar Vue.js",
+      "date": "2025-07-08",
+      "status": "approved"
+    },
+    {
+      "id": "2",
+      "member": "Sari Dewi",
+      "book": "Dasar-dasar JavaScript",
+      "date": "2025-07-09",
+      "status": "approved"
+    },
+    {
+      "id": "3",
+      "member": "Budi Santoso",
+      "book": "Algoritma dan Struktur Data",
+      "date": "2025-07-10",
+      "status": "approved"
+    },
+    {
+      "id": "4",
+      "member": "Citra Melani",
+      "book": "Pemrograman Web Modern",
+      "date": "2025-07-11",
+      "status": "approved"
+    }
+  ],
+  "loanRequests": []
+}
